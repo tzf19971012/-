@@ -1,0 +1,49 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reversed_node;
+    ListNode* new_node;
+    void reverse(ListNode* head,int cnt,int n){
+        if(n > cnt) return ;
+        if(!head) return ;
+        new_node = head->next;
+        head->next = reversed_node;
+        reversed_node = head;
+        reverse(new_node,cnt,n+1);
+        return ;
+    }
+    bool compare(ListNode* l1,ListNode* l2){
+        while(l1 && l2){
+            if(l1->val != l2->val)  return false;
+            l1 = l1->next;
+            l2 = l2->next;
+        }
+        return true;
+    }
+    bool isPalindrome(ListNode* head) {
+        if(!head) return true;
+        int cnt = 0;
+        ListNode* node = head;
+        while(node){
+            cnt ++;
+            node = node->next;
+        }
+        if(cnt == 1) return true;
+        reverse(head,cnt/2,1);
+        
+        if(cnt%2 == 0){
+            return compare(reversed_node,new_node);
+        }
+        else{
+            new_node = new_node->next;
+            return compare(reversed_node,new_node);
+        }
+    }
+};
