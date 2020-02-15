@@ -1,0 +1,56 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* List_add(ListNode* l1, ListNode* l2,int res){
+        ListNode* new_node = nullptr;
+        //cout<<"   "<<l1->val<<" "<<l2->val<<endl;
+        if(l1 && l2){
+            new_node = new ListNode(l1->val+l2->val+res);
+            if(new_node->val >= 10){
+                res = 1;
+                new_node->val = new_node->val % 10;
+            }
+            else{
+                res = 0;
+            }
+            new_node->next = List_add(l1->next,l2->next,res);
+        }
+        else if(l1){
+            new_node = new ListNode(l1->val+res);
+            if(new_node->val >= 10){
+                res = 1;
+                new_node->val = new_node->val % 10;
+            }
+            else{
+                res = 0;
+            }
+            new_node->next = List_add(l1->next,l2,res);
+        }
+        else if(l2){
+            new_node = new ListNode(l2->val+res);
+            if(new_node->val >= 10){
+                res = 1;
+                new_node->val = new_node->val % 10;
+            }
+            else{
+                res = 0;
+            }
+            new_node->next = List_add(l1,l2->next,res);
+        }
+        else if(res){
+            new_node = new ListNode(res);
+        }
+        return new_node;
+
+    }
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        return List_add(l1,l2,0);
+    }
+};
