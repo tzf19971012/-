@@ -1,0 +1,30 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* ans;
+    bool judge_leftandright_tree(TreeNode* root, TreeNode* p, TreeNode* q){
+        
+        bool f1 = false,f2 = false,f3 = false;
+        if(root == p || root == q) f1 = true;
+        if(root->left) f2 = judge_leftandright_tree(root->left,p,q);
+        if(root->right) f3 = judge_leftandright_tree(root->right,p,q);
+        if((f1 && f2) || (f1 && f3) || (f2 && f3)){
+            ans = root;
+        }
+        if(f1 || f2 || f3) return true;
+        return false;
+    }
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root) return ans;
+        judge_leftandright_tree(root,p,q);
+        return ans;
+    }
+};
